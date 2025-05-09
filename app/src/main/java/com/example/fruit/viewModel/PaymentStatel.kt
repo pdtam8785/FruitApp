@@ -7,6 +7,6 @@ package com.example.myapplication.viewmodel
 //    object Loading : PaymentState()
 //    data class Success(val transactionId: String) : PaymentState()
 //    data class Error(val message: String) : PaymentState()
-//}
+//
 
 
