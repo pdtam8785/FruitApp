@@ -7,7 +7,7 @@ import com.example.fruit.network.AuthApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-const val URL = "http://192.168.0.104:3000/"
+const val URL = "http://192.168.0.103:3001/"
 object ApiClient {
 
     private const val BASE_URL = URL// Thay bằng URL API của bạn

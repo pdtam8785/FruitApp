@@ -26,7 +26,12 @@ data class User(
     val email: String,
     val phone_number: String,
     val isVerified: Boolean,
-    val role: String
+    val role: String,
+    val token: String,
+    val __v: Int,
+    val resetCode: String,
+    val resetCodeExpiry: String,
+    val delivery_address: String
 )
 
 // Data class cho phản hồi lỗi từ API
@@ -62,4 +67,29 @@ data class ResetPasswordRequest(
 data class ResetPasswordResponse(
     val message: String?,
     val error: String?
+)
+data class GetUserInfoResponse(
+    val success: Boolean,
+    val message: String? = null,
+    val data: UserInfo? = null
+)
+
+data class UserInfo(
+    val delivery_address: String?,
+    val phone_number: String?
+)
+
+data class UpdateUserInfoRequest(
+    val delivery_address: String,
+    val phone_number: String
+)
+
+data class UpdateUserInfoResponse(
+    val success: Boolean,
+    val message: String? = null
+)
+data class GetOrdersResponse(
+    val success: Boolean,
+    val message: String? = null,
+    val data: List<Order>? = null
 )

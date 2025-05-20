@@ -28,6 +28,7 @@ import com.example.myapplication.viewModel.RegisterViewModel
 import com.rentify.user.app.view.auth.HomeScreenApp
 import com.rentify.user.app.view.auth.LoginScreenApp
 import com.rentify.user.app.view.auth.OrderScreenApp
+import com.rentify.user.app.view.auth.OrderStatusTabsScreen
 import com.rentify.user.app.view.auth.ProductDetailScreen
 import com.rentify.user.app.view.auth.RegisterScreen
 
@@ -69,6 +70,9 @@ class MainActivity : ComponentActivity() {
                 composable(ROUTER.ORDER.name) {
                     OrderScreenApp(navController = navController)
                 }
+                composable(ROUTER.ORDERSTATUSTABS.name) {
+                    OrderStatusTabsScreen(navController = navController)
+                }
                 composable(
                     route = "product_detail/{productId}",
                     arguments = listOf(navArgument("productId") { type = NavType.StringType })
@@ -92,6 +96,7 @@ class MainActivity : ComponentActivity() {
         LOGIN,
         HOME,
         REGISTER,
-        ORDER
+        ORDER,
+        ORDERSTATUSTABS
     }
 }

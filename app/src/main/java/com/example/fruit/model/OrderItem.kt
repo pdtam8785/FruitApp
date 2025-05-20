@@ -1,5 +1,6 @@
 package com.example.myapplication.model
 
+import com.google.gson.annotations.SerializedName
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -29,4 +30,9 @@ data class OrderItemResponse(
     val success: Boolean,
     val message: String,
     val data: List<OrderItem>?
+)
+data class BaseResponse<T>(
+    val success: Boolean,
+    val message: String?,
+    val data: T? = null
 )

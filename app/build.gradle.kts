@@ -64,5 +64,6 @@ dependencies {
     implementation ("androidx.compose.runtime:runtime-livedata:1.5.4")
     implementation ("androidx.compose.runtime:runtime:1.5.4")
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
-
+    implementation ("androidx.compose.material:material:1.5.4") // Hoặc phiên bản mới nhất
+    implementation ("com.google.android.libraries.places:places:3.3.0")
 }

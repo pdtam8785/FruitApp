@@ -129,6 +129,19 @@ fun DrawerContent(navController: NavHostController, loginViewModel: LoginViewMod
             icon = { Icon(Icons.Default.Delete, "Đăng xuất") },
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
         )
+        Divider(modifier = Modifier.padding(vertical = 8.dp))
+        NavigationDrawerItem(
+            label = { Text("don hang") },
+            selected = false, // Mục này không cần trạng thái selected
+            onClick = {
+                scope.launch {
+                    drawerState.close()
+                    safeNavigate(navController, MainActivity.ROUTER.ORDERSTATUSTABS.name, context)
+                }
+            },
+            icon = { Icon(Icons.Default.Delete, "Đăng xuất") },
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+        )
     }
 }
 fun safeNavigate(navController: NavController, route: String, context: Context) {

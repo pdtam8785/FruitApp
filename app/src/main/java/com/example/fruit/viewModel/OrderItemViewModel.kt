@@ -8,16 +8,23 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.model.AddOrderItemRequest
+
 import com.example.myapplication.model.OrderItem
 import com.example.myapplication.network.User.ApiClient
+import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 class OrderItemViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
+
 
     var errorMessage by mutableStateOf<String?>(null)
         private set
@@ -86,6 +93,64 @@ class OrderItemViewModel : ViewModel() {
                 errorMessage = "Lỗi: ${e.message}"
             } finally {
                 isLoading = false
+            }
+        }
+    }
+    fun deleteOrderItem(orderItemId: String) {
+        viewModelScope.launch {
+            try {
+                Log.d("OrderItemViewModel", "Bắt đầu xóa order item với ID: $orderItemId")
+                isLoading = true
+                errorMessage = null
+                successMessage = null
+
+                // Log trạng thái trước khi gọi API
+                Log.d("OrderItemViewModel", "Số lượng order items trước khi xóa: ${_orderItems.value.size}")
+                Log.d("OrderItemViewModel", "Order items hiện tại: ${_orderItems.value.map { it._id }}")
+
+                val response = ApiClient.authApi.deleteOrderItem(orderItemId)
+
+                // Log phản hồi từ API
+                Log.d("OrderItemViewModel", "Phản hồi từ API: ${response.toString()}")
+
+                if (response.success) {
+                    successMessage = response.message
+                    Log.d("OrderItemViewModel", "Xóa thành công, message: ${response.message}")
+
+                    // Cập nhật danh sách local
+                    val newList = _orderItems.value.filter { it._id != orderItemId }
+                    Log.d("OrderItemViewModel", "Số lượng order items sau khi xóa: ${newList.size}")
+                    _orderItems.value = newList
+                } else {
+                    errorMessage = response.message
+                    Log.e("OrderItemViewModel", "Lỗi từ server: ${response.message}")
+                }
+            } catch (e: Exception) {
+                errorMessage = "Lỗi khi xóa: ${e.message}"
+                Log.e("OrderItemViewModel", "Lỗi trong deleteOrderItem", e)
+
+                // Log chi tiết exception
+                when (e) {
+                    is SocketTimeoutException -> {
+                        Log.e("OrderItemViewModel", "Timeout khi kết nối đến server")
+                    }
+                    is ConnectException -> {
+                        Log.e("OrderItemViewModel", "Không thể kết nối đến server")
+                    }
+                    is HttpException -> {
+                        Log.e("OrderItemViewModel", "Lỗi HTTP: ${e.code()}")
+                        Log.e("OrderItemViewModel", "Response body: ${e.response()?.errorBody()?.string()}")
+                    }
+                    is JsonSyntaxException -> {
+                        Log.e("OrderItemViewModel", "Lỗi parse JSON")
+                    }
+                    else -> {
+                        Log.e("OrderItemViewModel", "Lỗi không xác định", e)
+                    }
+                }
+            } finally {
+                isLoading = false
+                Log.d("OrderItemViewModel", "Kết thúc quá trình xóa")
             }
         }
     }
